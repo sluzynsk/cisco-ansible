@@ -1,0 +1,40 @@
+---
+- name: Unconfigure IPv6
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+    - name: remove routing config on interface g1 and g4
+      cisco.ios.ios_ospf_interfaces:
+        config:
+          - name: GigabitEthernet1
+          - name: GigabitEthernet4
+        state: deleted
+
+    - name: disable IPv6 on interface g1 & g4
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: GigabitEthernet1
+            ipv6:
+              - enable: false
+          - name: GigabitEthernet4
+            ipv6:
+              - enable: false
+
+    - name: remove IPv6 address from g1
+      ios_config:
+        lines: 
+          - no ipv6 address
+        parents: 
+          - Interface GigabitEthernet1
+
+    - name: remove IPv6 address from g4
+      ios_config:
+        lines: 
+          - no ipv6 address
+        parents: 
+          - Interface GigabitEthernet4
+
+    - name: save configuration
+      ios_config:
+        save_when: modified

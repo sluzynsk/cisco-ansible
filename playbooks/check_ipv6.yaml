@@ -1,0 +1,24 @@
+---
+- name: Check for existing IPv6 configuration
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+    - name: show run interface
+      ios_command:
+        commands: show run interface gigabitethernet1 | include ipv6
+      register: output
+
+    - name: print output
+      debug:
+        var: output.stdout_lines
+
+    - name: show run interface on g4
+      ios_command:
+        commands: show run interface gigabitethernet4 | include ipv6
+      register: output
+
+    - name: print output
+      debug:
+        var: output.stdout_lines
+    

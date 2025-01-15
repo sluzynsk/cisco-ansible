@@ -1,0 +1,14 @@
+---
+- name: Show versions
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+    - name: run show version on routers
+      ios_command:
+        commands: show version | include Version
+      register: output
+
+    - name: print output
+      debug:
+        var: output.stdout_lines

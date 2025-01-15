@@ -1,0 +1,7 @@
+---
+routers:
+  hosts:
+    cat8000v-0:
+      ansible_host: 172.16.0.94
+    cat8000v-1:
+      ansible_host: 172.16.0.98
